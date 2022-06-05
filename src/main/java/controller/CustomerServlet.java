@@ -1,6 +1,7 @@
 package controller;
 
 import model.Customer;
+import model.Product;
 import service.CustomerService;
 import service.CustometServiceImpl;
 
@@ -34,10 +35,30 @@ public class CustomerServlet extends HttpServlet {
             case "delete":
                 delete(request, response);
                 break;
+            case "view":
+                view(request,response);
+                break;
             default:
                 showList(request, response);
         }
 
+    }
+
+    private void view(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Customer customer = customerService.findById(id);
+        RequestDispatcher dispatcher = null;
+        if (customer != null) {
+            request.setAttribute("st", customer);
+            dispatcher = request.getRequestDispatcher("customer/view.jsp");
+        }
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {

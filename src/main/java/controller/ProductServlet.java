@@ -34,8 +34,28 @@ public class ProductServlet extends HttpServlet {
             case "delete":
                 delete(request, response);
                 break;
+            case "view":
+                showView(request, response);
+                break;
             default:
                 showList(request, response);
+        }
+    }
+
+    private void showView(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Product product = productService.findById(id);
+        RequestDispatcher dispatcher = null;
+        if (product != null) {
+            request.setAttribute("st", product);
+            dispatcher = request.getRequestDispatcher("product/view.jsp");
+        }
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
