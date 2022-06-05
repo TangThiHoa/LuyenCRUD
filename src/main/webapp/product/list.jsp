@@ -13,6 +13,7 @@
     <title>List product</title>
 </head>
 <body>
+<a href="/products?action=create">Create</a>
 <form action="/products">
     <input type="text" name="name">
     <button>Search</button>
@@ -20,7 +21,9 @@
 </form>
 <h1>List of product</h1>
 <c:forEach items="${ds}" var="p">
-    <h2>${p.id} , ${p.name} , ${p.price},
+    <h2>${p.id} , ${p.name} , ${p.price},<a href="/products?action=edit&id=${p.id}">Edit</a>
+        <a href="/products?action=delete&id=${p.id}">Delete</a>
+
     </h2>
 </c:forEach>
 </body>

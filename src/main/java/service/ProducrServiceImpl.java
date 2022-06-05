@@ -23,6 +23,17 @@ public class ProducrServiceImpl implements ProductService {
     }
     @Override
     public void add(Product product) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("insert into product(id,name,price,quantity) values (?,?,?,?)");) {
+            preparedStatement.setInt(1, product.getId());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setInt(3, product.getPrice());
+            preparedStatement.setInt(4, product.getQuantity());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
 
     }
 
@@ -70,12 +81,33 @@ public class ProducrServiceImpl implements ProductService {
 
     @Override
     public boolean delete(int id) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("delete from product where id = ?");) {
+            preparedStatement.setInt(1, id);
+            System.out.println(preparedStatement); //in ra câu truy vấn.
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+        }
         return false;
+
     }
 
     @Override
     public boolean update(Product product) throws SQLException {
-        return false;
+        boolean a = false;
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement("update product set name =? ,price=?,quantity=? where id=?");) {
+            preparedStatement.setString(1,product.getName());
+            preparedStatement.setInt(2,product.getPrice());
+            preparedStatement.setInt(3,product.getQuantity());
+            preparedStatement.setInt(4,product.getId());
+            a = preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return a;
     }
 
     @Override
