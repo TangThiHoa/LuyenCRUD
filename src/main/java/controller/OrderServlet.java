@@ -12,6 +12,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "OrderServlet", urlPatterns = "/orders")
@@ -30,10 +31,38 @@ public class OrderServlet extends HttpServlet {
             case "view":
                 View(request, response);
                 break;
+            case "create":
+                showCreatForm(request, response);
+                break;
+            case "edit":
+                showEditForm(request,response);
+                break;
+            case "delete":
+                showDeleteForm(request,response);
+                break;
+
             default:
                 showList(request, response);
 
         }
+    }
+
+    private void showDeleteForm(HttpServletRequest request, HttpServletResponse response) {
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        List<Customer>customerList = customerService.findAll();
+        request.setAttribute("ds", customerList);
+        Order order = orderService.findById(id);
+        request.setAttribute("sua", order);
+        request.getRequestDispatcher("order/edit.jsp").forward(request, response);
+    }
+
+    private void showCreatForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("order/create.jsp").forward(request, response);
+
+
     }
 
     private void View(HttpServletRequest request, HttpServletResponse response) {
@@ -68,7 +97,37 @@ public class OrderServlet extends HttpServlet {
         }
         switch (action) {
             case "create":
+                creat(request, response);
+                break;
+            case "edit":
+                try {
+                    edit(request,response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
 
         }
+    }
+
+    private void edit(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int total = Integer.parseInt(request.getParameter("total"));
+        int customerfind = Integer.parseInt(request.getParameter("customerId"));
+        Customer customer = customerService.findById(customerfind);
+        Order order = new Order(id, total, customer);
+        orderService.update(order);
+        response.sendRedirect("/orders");
+
+    }
+
+    private void creat(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int total = Integer.parseInt(request.getParameter("total"));
+        int customerfind = Integer.parseInt(request.getParameter("customerId"));
+        Customer customer = customerService.findById(customerfind);
+        Order order = new Order(id, total, customer);
+        orderService.add(order);
+        response.sendRedirect("/orders");
     }
 }

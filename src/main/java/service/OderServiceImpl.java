@@ -32,11 +32,10 @@ public class OderServiceImpl implements OrderService {
     @Override
     public void add(Order order) {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("insert into oder(id,time,total,customerId) values (?,?,?,?)");) {
+             PreparedStatement preparedStatement = connection.prepareStatement("insert into order(id,total,customerId) values (?,?,?)");) {
             preparedStatement.setInt(1, order.getId());
-            preparedStatement.setInt(2, order.getTime());
-            preparedStatement.setInt(3, order.getTotal());
-            preparedStatement.setInt(4, order.getCustomerId().getId());
+            preparedStatement.setInt(2, order.getTotal());
+            preparedStatement.setInt(3, order.getCustomerId().getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -101,12 +100,10 @@ public class OderServiceImpl implements OrderService {
         boolean a = false;
         try (
                 Connection connection = getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("update order set id =?,time =?,total =?,customerId=? where id=?");) {
-            preparedStatement.setInt(1, order.getId());
-            preparedStatement.setInt(2, order.getTime());
-            preparedStatement.setInt(3, order.getTotal());
-            preparedStatement.setInt(4, order.getCustomerId().getId());
-
+                PreparedStatement preparedStatement = connection.prepareStatement("update `order` set total =?,customerId=? where id=?");) {
+            preparedStatement.setInt(1, order.getTotal());
+            preparedStatement.setInt(2, order.getCustomerId().getId());
+            preparedStatement.setInt(3, order.getId());
             a = preparedStatement.executeUpdate() > 0;
 
         }
