@@ -18,19 +18,19 @@
 <table>
     <tr>
         <td>ID: </td>
-        <td>${requestScope["st"].getId}</td>
+        <td>${st.id}</td>
     </tr>
     <tr>
         <td>Name: </td>
-        <td>${requestScope["st"].getName()}</td>
+        <td>${st.name}</td>
     </tr>
     <tr>
         <td>Price: </td>
-        <td>${requestScope["st"].getPrice}</td>
+        <td>${st.price}</td>
     </tr>
     <tr>
         <td>Quantity: </td>
-        <td>${requestScope["st"].quantity}</td>
+        <td>${st.quantity}</td>
     </tr>
 </table>
 </body>
