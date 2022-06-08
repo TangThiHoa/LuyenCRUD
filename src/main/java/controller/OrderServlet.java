@@ -37,9 +37,6 @@ public class OrderServlet extends HttpServlet {
             case "edit":
                 showEditForm(request,response);
                 break;
-            case "delete":
-                showDeleteForm(request,response);
-                break;
 
             default:
                 showList(request, response);
@@ -47,8 +44,7 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    private void showDeleteForm(HttpServletRequest request, HttpServletResponse response) {
-    }
+
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));

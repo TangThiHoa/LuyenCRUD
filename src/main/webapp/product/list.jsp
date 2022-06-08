@@ -18,11 +18,13 @@
 </head>
 <body>
 
-<%--<form action="/products">--%>
-<%--    <input type="text" name="name">--%>
-<%--    <button>Search</button>--%>
+<form action="/products">
+    <input type="text" name="name" placeholder="Tìm theo tên">
+    <input type="number" name="p1" placeholder="Nhập theo giá từ">
+    <input type="number" name="p2" placeholder="đến">
+    <button>Search</button>
+</form>
 
-<%--</form>--%>
 <%--<h1>List of product</h1>--%>
 <%--<c:forEach items="${ds}" var="p">--%>
 <%--    <h2>${p.id} , ${p.name} , ${p.price},<a href="/products?action=edit&id=${p.id}">Edit</a>--%>
@@ -35,7 +37,7 @@
 <div class="container">
     <div class="row mt-2">
         <div class="col-9">
-            <h2 style="text-align: center">List Product</h2>
+            <h2 style="text-align: center"><a href="/products">Product</a> </h2>
             <table class="table table-striped mt-3">
                 <thead>
                 <tr>
@@ -51,6 +53,8 @@
                         <td>${st.price}</td>
                         <td>${st.quantity}</td>
                         <td>
+                        <c:if test="${st.price >200}">Sale 10%</c:if>
+                        <c:if test="${st.price <200}">Sale 20%</c:if>
                             <a class="btn btn-Primary" href="/products?action=view&id=${st.id}">View</a>
 <%--                            <button type="button" class="btn btn-danger">Danger</button>--%>
                             <a class="btn btn-danger" href="/products?action=edit&id=${st.id}">Edit</a>

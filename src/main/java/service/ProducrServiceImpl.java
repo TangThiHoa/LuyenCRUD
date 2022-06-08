@@ -64,7 +64,7 @@ public class ProducrServiceImpl implements ProductService {
     public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("select * from product order by price");) {
+             PreparedStatement preparedStatement = connection.prepareStatement("select * from product");) {
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -124,6 +124,27 @@ public class ProducrServiceImpl implements ProductService {
                 int price = rs.getInt("price");
                 int quantity = rs.getInt("quantity");
                 products .add(new Product(id,namefind,price,quantity)) ;
+            }
+        } catch (SQLException e) {
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> Price(int p1,int p2) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("select * from product where price between ? and ? ");) {
+            preparedStatement.setString(1, String.valueOf(p1));
+            preparedStatement.setString(2, String.valueOf(p2));
+            System.out.println(preparedStatement);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int price = rs.getInt("price");
+                int quantity = rs.getInt("quantity");
+                products .add(new Product(id,name,price,quantity)) ;
             }
         } catch (SQLException e) {
         }

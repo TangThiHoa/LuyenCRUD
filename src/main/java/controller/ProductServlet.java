@@ -82,15 +82,23 @@ public class ProductServlet extends HttpServlet {
 
     private void showList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
+        String p1 = request.getParameter("p1");
+        String p2 = (request.getParameter("p2"));
         List<Product> productList;
         if (name != null & name != "") {
             productList = productService.findByName(name);
-        } else {
+        }
+        else if (p1 != null && p2 !=null && p1!="" && p2 != ""){
+            productList = productService.Price(Integer.parseInt(p1),Integer.parseInt(p2));
+        }
+        else {
             productList = productService.findAll();
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/list.jsp");
         request.setAttribute("ds", productList);
         dispatcher.forward(request, response);
+
+
     }
 
     @Override
@@ -118,7 +126,7 @@ public class ProductServlet extends HttpServlet {
         String name = request.getParameter("name");
         int price = Integer.parseInt(request.getParameter("price"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
-       Product product = new Product(id, name, price,quantity);
+        Product product = new Product(id, name, price, quantity);
         productService.update(product);
         response.sendRedirect("/products");
 
@@ -129,7 +137,7 @@ public class ProductServlet extends HttpServlet {
         String name = request.getParameter("name");
         int price = Integer.parseInt(request.getParameter("price"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
-        productService.add(new Product(id, name, price,quantity));
+        productService.add(new Product(id, name, price, quantity));
         response.sendRedirect("/products");
 
     }
